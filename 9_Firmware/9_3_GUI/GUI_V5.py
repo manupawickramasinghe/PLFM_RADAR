@@ -1478,19 +1478,18 @@ class RadarGUI:
                 )
                 self.update_target_velocity(packet, velocity)
 
-            elif packet["type"] == "detection":
-                if packet["detected"]:
-                    # Apply pitch correction to detection elevation
-                    raw_elevation = packet["elevation"]
-                    corrected_elevation = self.apply_pitch_correction(
-                        raw_elevation, self.current_gps.pitch
-                    )
+            elif packet["type"] == "detection" and packet["detected"]:
+                # Apply pitch correction to detection elevation
+                raw_elevation = packet["elevation"]
+                corrected_elevation = self.apply_pitch_correction(
+                    raw_elevation, self.current_gps.pitch
+                )
 
-                    logging.info(
-                        f"CFAR Detection: Raw Elev {raw_elevation}°, "
-                        f"Corrected Elev {corrected_elevation:.1f}°, "
-                        f"Pitch {self.current_gps.pitch:.1f}°"
-                    )
+                logging.info(
+                    f"CFAR Detection: Raw Elev {raw_elevation}°, "
+                    f"Corrected Elev {corrected_elevation:.1f}°, "
+                    f"Pitch {self.current_gps.pitch:.1f}°"
+                )
 
         except (ValueError, KeyError) as e:
             logging.error(f"Error processing radar packet: {e}")
